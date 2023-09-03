@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Services</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Mappers\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ToDoApp.Core\ToDoApp.Core.csproj" />
+      <ProjectReference Include="..\ToDoApp.Repositories\ToDoApp.Repositories.csproj" />
+    </ItemGroup>
+
+</Project>
