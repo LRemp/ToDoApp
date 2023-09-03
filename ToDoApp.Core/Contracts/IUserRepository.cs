@@ -8,4 +8,5 @@ public interface IUserRepository
 {
     public Task<User> GetUser(int username);
     public Task CreateUser(UserDTO user);
+    public Task UpdatePassword(UserUpdatePasswordDTO user);
 }
