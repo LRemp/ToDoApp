@@ -14,14 +14,14 @@ public class UserRepository: IUserRepository
     {
         _mySqlConnection = mysqlConnection;
     }
-    public async Task<User> GetUser(int username)
+    public async Task<User> GetUser(string username)
     {
         var query = @"SELECT * FROM users WHERE username = @username";
 
         var user = await _mySqlConnection.QueryAsync<User>(query, new { username });
         return user.FirstOrDefault();
     }
-    public async Task CreateUser(UserDTO user)
+    public async Task CreateUser(CreateUserDTO user)
     {
         var query = @"INSERT INTO users (username, email, password)
                       VALUES(@username, @email, @passwrd)";

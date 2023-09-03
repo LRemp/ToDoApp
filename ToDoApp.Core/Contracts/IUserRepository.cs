@@ -6,7 +6,7 @@ namespace Core.Contracts;
 
 public interface IUserRepository
 {
-    public Task<User> GetUser(int username);
-    public Task CreateUser(UserDTO user);
+    public Task<User> GetUser(string username);
+    public Task CreateUser(CreateUserDTO user);
     public Task UpdatePassword(UserUpdatePasswordDTO user);
 }
