@@ -7,7 +7,8 @@ public interface IUserService
 {
     public Task<UserDTO> GetAsync(string username);
     public Task<User> GetInternalAsync(string username);
-    public Task UpdatePasswordAsync(UserUpdatePasswordDTO user);
+    public Task AddAsync(CreateUserDTO user);
+    public Task<bool> UpdatePasswordAsync(UserUpdatePasswordDTO user);
     public Task<bool> CheckPasswordAsync(LoginDTO login);
-    public Task<List<string>> GetUserRoles(string username);
+    public Task<List<string>> GetUserRoles(User user);
 }

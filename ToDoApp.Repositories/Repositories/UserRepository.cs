@@ -43,7 +43,14 @@ public class UserRepository: IUserRepository
         await _mySqlConnection.QueryAsync(query, new
         {
             username = user.Username,
-            password = user.Password
+            password = user.NewPassword
         });
+    }
+
+    public async Task<bool> GetHasAdminRole(int id)
+    {
+        var query = @"SELECT * FROM admins where user = @id";
+        var result = await _mySqlConnection.QueryAsync<User>(query, new { id });
+        return result.FirstOrDefault() != null;
     }
 }
