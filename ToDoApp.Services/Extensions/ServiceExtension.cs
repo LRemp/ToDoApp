@@ -9,6 +9,7 @@ public static class ServiceExtension
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddTransient<IJwtTokenService, JwtTokenService>();
         services.AddTransient<ITaskService, TaskService>();
     }
 }
