@@ -66,7 +66,7 @@ public class UserService: IUserService
         {
             "User"
         };
-        var hasAdminRole = await _userRepository.GetHasAdminRole(user.Id);
+        var hasAdminRole = await _userRepository.GetHasAdminRole(user.Username);
         if (hasAdminRole) roles.Add("Admin");
         return roles;
     }

@@ -9,5 +9,5 @@ public interface IUserRepository
     public Task<User> GetUser(string username);
     public Task CreateUser(CreateUserDTO user);
     public Task UpdatePassword(UserUpdatePasswordDTO user);
-    public Task<bool> GetHasAdminRole(int id);
+    public Task<bool> GetHasAdminRole(string username);
 }

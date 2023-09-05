@@ -33,8 +33,8 @@ namespace API.Controllers
 
             await _userService.AddAsync(createUser);
 
-            User createdUser = await _userService.GetInternalAsync(createUser.Username);
-            List<string> userRoles = await _userService.GetUserRoles(createdUser);
+            var createdUser = await _userService.GetInternalAsync(createUser.Username);
+            var userRoles = await _userService.GetUserRoles(createdUser);
             var token = _jwtTokenService.CreateAccessToken(createdUser, userRoles);
 
             var login = new AuthenticatedLoginDTO
@@ -43,6 +43,34 @@ namespace API.Controllers
                 Username = createdUser.Username
             };
             return Ok(login);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO login)
+        {
+            var user = await _userService.GetInternalAsync(login.Username);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var  isPasswordValid = await _userService.CheckPasswordAsync(login);
+            if (!isPasswordValid)
+            {
+
+                return BadRequest("Wrong password.");
+            }
+            
+            var userRoles = await _userService.GetUserRoles(user);
+            var token = _jwtTokenService.CreateAccessToken(user, userRoles);
+
+            var authenticatedLogin = new AuthenticatedLoginDTO()
+            {
+                Token = token,
+                Username = user.Username
+            };
+            
+            return Ok(authenticatedLogin);
         }
     }
 }

@@ -47,10 +47,10 @@ public class UserRepository: IUserRepository
         });
     }
 
-    public async Task<bool> GetHasAdminRole(int id)
+    public async Task<bool> GetHasAdminRole(string username)
     {
-        var query = @"SELECT * FROM admins where user = @id";
-        var result = await _mySqlConnection.QueryAsync<User>(query, new { id });
+        var query = @"SELECT * FROM admins where user = @username";
+        var result = await _mySqlConnection.QueryAsync<User>(query, new { username });
         return result.FirstOrDefault() != null;
     }
 }
