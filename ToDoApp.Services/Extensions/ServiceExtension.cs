@@ -10,6 +10,7 @@ public static class ServiceExtension
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddTransient<IUserService, UserService>();
         services.AddAutoMapper(typeof(UserMappingProfile));
         services.AddTransient<IJwtTokenService, JwtTokenService>();
         services.AddTransient<ITaskService, TaskService>();

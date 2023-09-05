@@ -14,5 +14,6 @@ public static class RepositoryExtensions
 
         services.AddTransient(_ => new MySqlConnection(connectionString));
         services.AddTransient<ITaskRepository, TaskRepository>();
+        services.AddTransient<IUserRepository, UserRepository>();
     }
 }

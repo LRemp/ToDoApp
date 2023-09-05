@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Contracts;
+using Core.DTOs;
+using Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,33 +14,35 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserController()
+        private readonly IUserService _userService;
+        private readonly IJwtTokenService _jwtTokenService;
+        public UserController(IUserService userService, IJwtTokenService jwtTokenService)
         {
-            
-        }
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            _userService = userService;
+            _jwtTokenService = jwtTokenService;
         }
 
-        // POST: api/User
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(CreateUserDTO createUser)
         {
-        }
+            var user = await _userService.GetAsync(createUser.Username);
+            if (user != null)
+            {
+                return BadRequest("User already exists");
+            }
 
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            await _userService.AddAsync(createUser);
 
-        // DELETE: api/User/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            User createdUser = await _userService.GetInternalAsync(createUser.Username);
+            List<string> userRoles = await _userService.GetUserRoles(createdUser);
+            var token = _jwtTokenService.CreateAccessToken(createdUser, userRoles);
+
+            var login = new AuthenticatedLoginDTO
+            {
+                Token = token,
+                Username = createdUser.Username
+            };
+            return Ok(login);
         }
     }
 }

@@ -24,7 +24,7 @@ public class UserRepository: IUserRepository
     public async Task CreateUser(CreateUserDTO user)
     {
         var query = @"INSERT INTO users (username, email, password)
-                      VALUES(@username, @email, @passwrd)";
+                      VALUES(@username, @email, @password)";
 
         await _mySqlConnection.QueryAsync(query, new
         {
