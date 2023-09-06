@@ -11,20 +11,20 @@ public class TaskService: ITaskService
     {
         _taskRepository = taskRepository;
     }
-    public async Task<List<TaskItem>> GetAsync()
+    public async Task<List<TaskItem>> GetAsync(int ownerId)
     {
-        List<TaskItem> tasks = await _taskRepository.GetTasks();
+        List<TaskItem> tasks = await _taskRepository.GetTasks(ownerId);
         return tasks;
     }
 
-    public Task<TaskItem> GetAsync(int id)
+    public async Task<TaskItem> GetSingleAsync(int id)
     {
-        throw new NotImplementedException();
+        TaskItem task = await _taskRepository.GetTask(id);
+        return task;
     }
-
-    public Task AddAsync(TaskItemDTO taskItem)
+    public async Task AddAsync(TaskItemDTO taskItem, User user)
     {
-        throw new NotImplementedException();
+        await _taskRepository.AddTask(taskItem, user);
     }
 
     public Task<bool> UpdateAsync(int id, TaskItemDTO taskItem)

@@ -26,14 +26,23 @@ public class TaskRepository: ITaskRepository
         var tasks = await _mysqlConnection.QueryAsync<TaskItem>(query, new { owner = ownerId });
         return tasks.ToList();
     }
-    public async Task AddTask(TaskItemDTO taskItem)
+
+    public async Task<TaskItem> GetTask(int id)
     {
-        var query = @"INSERT INTO tasks (title, description, deadline, priority)
-                      VALUES (@title, @descrition, @deadline, @priority)";
+        var query = @"SELECT * FROM tasks WHERE id = @id";
+        var tasks = await _mysqlConnection.QueryAsync<TaskItem>(query, new { id });
+        return tasks.FirstOrDefault();
+    }
+
+    public async Task AddTask(TaskItemDTO taskItem, User user)
+    {
+        var query = @"INSERT INTO tasks (title, owner, description, deadline, priority)
+                      VALUES (@title, @owner, @description, @deadline, @priority)";
 
         await _mysqlConnection.QueryAsync(query, new
         {
             title = taskItem.Title,
+            owner = user.Id,
             description = taskItem.Description,
             deadline = taskItem.Deadline,
             priority = taskItem.Priority
